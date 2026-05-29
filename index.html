@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InkMotion — AI Video Generator for Illustrated Characters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0e0e;
+    --ink-mid: #3a3a3a;
+    --ink-muted: #7a7a7a;
+    --paper: #f5f2ee;
+    --paper-warm: #ede9e3;
+    --accent: #d94f2b;
+    --accent-soft: #f0e4df;
+    --white: #ffffff;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2.5rem;
+    background: rgba(245,242,238,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(14,14,14,0.08);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    padding: 0.5rem 1.25rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 2.5rem 5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    max-width: 800px;
+    margin-bottom: 1.75rem;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    max-width: 560px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.85rem 2rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: #b83e1f; transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.85rem 2rem;
+    border: 1.5px solid var(--ink);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+  /* ── SECTION SHARED ── */
+  section {
+    padding: 6rem 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+    color: var(--ink);
+  }
+
+  .section-intro {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    max-width: 600px;
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid rgba(14,14,14,0.1);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── PROBLEM STRIP ── */
+  .problem-strip {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 5rem 2.5rem;
+  }
+
+  .problem-strip .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .problem-strip .section-label { color: var(--accent); }
+
+  .problem-strip h2 { color: var(--paper); }
+
+  .problem-strip .section-intro { color: rgba(245,242,238,0.65); }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2px;
+    margin-top: 3rem;
+  }
+
+  .problem-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 2rem;
+  }
+
+  .problem-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+
+  .problem-card h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .problem-card p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: rgba(245,242,238,0.55);
+    line-height: 1.6;
+  }
+
+  /* ── DEMO SECTION ── */
+  .demo-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .demo-item {
+    background: var(--white);
+    border: 1px solid rgba(14,14,14,0.1);
+    overflow: hidden;
+  }
+
+  .demo-meta {
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid rgba(14,14,14,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .demo-meta h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+    letter-spacing: -0.01em;
+  }
+
+  .demo-meta p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+
+  .demo-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tag-concept { background: var(--accent-soft); color: var(--accent); }
+  .tag-limitation { background: #e8edf5; color: #2a4a7a; }
+  .tag-vision { background: #e8f5e9; color: #1a5c2a; }
+
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    background: var(--ink);
+  }
+
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  .video-placeholder {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: rgba(245,242,238,0.3);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  .play-icon {
+    width: 52px;
+    height: 52px;
+    border: 1.5px solid rgba(245,242,238,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .play-icon svg { width: 18px; height: 18px; fill: rgba(245,242,238,0.3); margin-left: 3px; }
+
+  /* ── HOW IT WORKS ── */
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0;
+    border: 1px solid rgba(14,14,14,0.1);
+    margin-top: 3rem;
+  }
+
+  .how-step {
+    padding: 2.25rem 2rem;
+    border-right: 1px solid rgba(14,14,14,0.1);
+    position: relative;
+  }
+
+  .how-step:last-child { border-right: none; }
+
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .how-step h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .how-step p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.6;
+  }
+
+  /* ── INTEREST FORM ── */
+  .form-section {
+    background: var(--paper-warm);
+    padding: 6rem 2.5rem;
+    border-top: 1px solid rgba(14,14,14,0.1);
+  }
+
+  .form-inner {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .form-inner h2 { margin-bottom: 0.75rem; }
+
+  .form-inner .section-intro { margin-bottom: 2.5rem; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-field.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+
+  input[type="email"],
+  input[type="text"],
+  select {
+    background: var(--white);
+    border: 1px solid rgba(14,14,14,0.18);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 300;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    width: 100%;
+  }
+
+  input:focus, select:focus { border-color: var(--ink); }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+  }
+
+  .form-submit {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .form-note {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    font-weight: 300;
+  }
+
+  .success-msg {
+    display: none;
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: #1b5e20;
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2.5rem;
+    border-top: 1px solid rgba(14,14,14,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .footer-logo span { color: var(--accent); }
+
+  footer p {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    font-weight: 300;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+  h1 { animation: fadeUp 0.6s 0.1s ease both; }
+  .hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
+  .hero-actions { animation: fadeUp 0.6s 0.3s ease both; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 680px) {
+    nav { padding: 1rem 1.25rem; }
+    .hero, section { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .problem-strip { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .form-section { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .how-step { border-right: none; border-bottom: 1px solid rgba(14,14,14,0.1); }
+    .how-step:last-child { border-bottom: none; }
+    footer { padding: 2rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">ink<span>motion</span></a>
+  <a href="#interest" class="nav-cta">Get early access</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">Early stage · Seeking builders &amp; believers</p>
+  <h1>AI video that knows <em>which</em> character to move</h1>
+  <p class="hero-sub">Every AI video tool today starts with a single image and guesses which character should act. InkMotion lets you define each character separately — and command them independently.</p>
+  <div class="hero-actions">
+    <a href="#demos" class="btn-primary">See the demo</a>
+    <a href="#interest" class="btn-ghost">Express interest</a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PROBLEM -->
+<div class="problem-strip">
+  <div class="inner">
+    <p class="section-label">The problem</p>
+    <h2>Current AI video tools were not built for characters</h2>
+    <p class="section-intro">If you work with illustrated characters — for courses, comics, or brand content — existing tools make you fight the model every time.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-num">01</div>
+        <h3>One canvas, no identity</h3>
+        <p>You upload a scene. The AI sees pixels, not characters. It doesn't know who is who.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">02</div>
+        <h3>Actions contaminate</h3>
+        <p>Ask Character A to wave. Character B waves too — or the background warps. The model guesses.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">03</div>
+        <h3>No per-character control</h3>
+        <p>There is no way to say "Character A does X while Character B does Y" in a single generation.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">04</div>
+        <h3>Illustrated styles break</h3>
+        <p>Hand-drawn and illustrated characters suffer the most. Realism-tuned models reinterpret them every time.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <p class="section-label">The approach</p>
+  <h2>Define characters by image. Direct them by scene.</h2>
+  <p class="section-intro">InkMotion's core idea is simple: each character is an uploaded reference image, not a text description. The system matches those references to the scene, then animates each one per your instructions.</p>
+  <div class="how-grid">
+    <div class="how-step">
+      <p class="step-num">STEP 01</p>
+      <h3>Upload your scene</h3>
+      <p>Your pre-composed first frame — background, characters positioned exactly where you want them.</p>
+    </div>
+    <div class="how-step">
+      <p class="step-num">STEP 02</p>
+      <h3>Upload character references</h3>
+      <p>Separate reference images for Character A and Character B. These define identity — not position, not description.</p>
+    </div>
+    <div class="how-step">
+      <p class="step-num">STEP 03</p>
+      <h3>Give each character instructions</h3>
+      <p>Per-scene action prompts for each character independently. "A walks left. B turns and points."</p>
+    </div>
+    <div class="how-step">
+      <p class="step-num">STEP 04</p>
+      <h3>Generate</h3>
+      <p>The system detects character locations, builds precise prompts, and generates your video.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DEMOS -->
+<section id="demos">
+  <p class="section-label">Demos</p>
+  <h2>See where it is — and where it's going</h2>
+  <p class="section-intro">These are honest demos. The current build is a proof of concept. What matters is that the architecture works and the direction is clear.</p>
+
+  <div class="demo-grid">
+
+    <!-- DEMO 1: Replace YOUR_VIDEO_ID_1 with actual YouTube video ID -->
+    <div class="demo-item">
+      <div class="video-wrapper">
+        <!-- TO ADD VIDEO: replace the placeholder div below with:
+             <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe>
+        -->
+        <div class="video-placeholder">
+          <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Demo video coming soon</span>
+        </div>
+      </div>
+      <div class="demo-meta">
+        <div>
+          <h3>Proof of concept — per-character direction</h3>
+          <p>The core workflow: scene upload, character references, independent action prompts, generated output.</p>
+        </div>
+        <span class="demo-tag tag-concept">Concept</span>
+      </div>
+    </div>
+
+    <!-- DEMO 2 -->
+    <div class="demo-item">
+      <div class="video-wrapper">
+        <div class="video-placeholder">
+          <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Demo video coming soon</span>
+        </div>
+      </div>
+      <div class="demo-meta">
+        <div>
+          <h3>Current limitations — what existing tools do</h3>
+          <p>Unguided AI video generation: action contamination, character confusion, style drift.</p>
+        </div>
+        <span class="demo-tag tag-limitation">Limitation</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- INTEREST FORM -->
+<div class="form-section" id="interest">
+  <div class="form-inner">
+    <p class="section-label">Get involved</p>
+    <h2>This is early. The right people will shape it.</h2>
+    <p class="section-intro">Whether you're a potential user, an engineer who wants to build this, or an investor who sees the opportunity — leave your details and we'll be in touch.</p>
+
+    <!-- Formspree: replace ACTION_URL with your Formspree endpoint when ready -->
+    <form id="interest-form" action="YOUR_FORMSPREE_ENDPOINT" method="POST">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field full">
+          <label for="interest">I am interested as a…</label>
+          <select id="interest" name="interest_type" required>
+            <option value="" disabled selected>Select your interest</option>
+            <option value="user">Potential user / customer</option>
+            <option value="engineer">Engineer / developer (want to build this)</option>
+            <option value="investor">Investor</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-submit">
+        <button type="submit" class="btn-primary">Submit interest</button>
+        <p class="form-note">No spam. Ever.</p>
+      </div>
+    </form>
+    <div class="success-msg" id="success-msg">
+      Thanks — we'll be in touch. You're early, which means you matter.
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">ink<span>motion</span>.art</span>
+  <p>Early stage · inkmotion.art · Building in public</p>
+</footer>
+
+<script>
+  const form = document.getElementById('interest-form');
+  const successMsg = document.getElementById('success-msg');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const data = new FormData(form);
+    const action = form.getAttribute('action');
+
+    if (action === 'YOUR_FORMSPREE_ENDPOINT') {
+      successMsg.style.display = 'block';
+      form.style.display = 'none';
+      return;
+    }
+
+    try {
+      const res = await fetch(action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        successMsg.style.display = 'block';
+      }
+    } catch(err) {
+      console.error(err);
+    }
+  });
+</script>
+
+</body>
+</html>
