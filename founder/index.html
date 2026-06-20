@@ -178,6 +178,46 @@
 
   .section-text strong { font-weight: 400; color: var(--ink); }
 
+  .section-list {
+    list-style: none;
+    max-width: 700px;
+    margin: -1.5rem 0 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .section-list li {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.75;
+    padding-left: 1.25rem;
+    position: relative;
+  }
+
+  .section-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+  }
+
+  .section-list strong { font-weight: 400; color: var(--ink); }
+
+  .section-note {
+    font-size: 0.88rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-muted);
+    max-width: 700px;
+    margin: -1rem 0 2.5rem;
+    line-height: 1.6;
+  }
+
   hr.divider {
     border: none;
     border-top: 1px solid rgba(14,14,14,0.1);
@@ -435,7 +475,13 @@
   <p class="section-eyebrow">F5 — Instructor-Led Training</p>
   <h2>A 3-day SaaS training course, built to stay current</h2>
   <p class="section-text">Material created for the 3-day training course for SaaS product "F5 Distributed Cloud Services" was designed and created by me in an authoring tool called Xyleme (aka "Madcap Xyleme"). The course is designed to be taught by an instructor via Zoom or in-person, and contains reference material and labs. Due to the ever-changing nature of the product itself, the material is designed to be constantly live and constantly updated, so students always have the most-recent version on-hand.</p>
-  <p class="section-text">Each link below is a separate web page for three different purposes: the <strong>Instructor Guide</strong> shows everything the instructor needs to know to run the class, including secret tips and tricks for using SaaS tools and AWS provisioning. The <strong>Presentation</strong> displays in Xyleme's version of PowerPoint, and is meant to be presented to the class during training. The <strong>Student Guide</strong> is nearly identical to the Instructor Guide except for excised sensitive content (e.g. AWS access keys).</p>
+  <p class="section-text">Each link below is a separate web page for three different purposes:</p>
+  <ul class="section-list">
+    <li><strong>Instructor Guide</strong> — shows everything the instructor needs to know to run the class, including secret tips and tricks for using SaaS tools and AWS provisioning.</li>
+    <li><strong>Presentation</strong> — displays in Xyleme's version of PowerPoint, and is meant to be presented to the class during training.</li>
+    <li><strong>Student Guide</strong> — nearly identical to the Instructor Guide except for excised sensitive content (e.g. AWS access keys).</li>
+  </ul>
+  <p class="section-note"><em>Note: some of the images in these files do not render properly due to internal reference issues. This is expected but has no bearing on content.</em></p>
 
   <div class="link-grid">
     <a href="https://dazmuth.github.io/ig/" target="_blank" class="link-card">
