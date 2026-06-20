@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aaron Johnson — Instructional Design, AI Video, Training Content</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0e0e;
+    --ink-mid: #3a3a3a;
+    --ink-muted: #7a7a7a;
+    --paper: #f5f2ee;
+    --paper-warm: #ede9e3;
+    --accent: #d94f2b;
+    --accent-soft: #f0e4df;
+    --white: #ffffff;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2.5rem;
+    background: rgba(245,242,238,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(14,14,14,0.08);
+  }
+
+  .nav-name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.75rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--ink);
+    color: var(--paper) !important;
+    font-size: 0.85rem;
+    padding: 0.5rem 1.1rem;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent); }
+
+  /* ── HEADER / HERO ── */
+  .hero {
+    padding: 9rem 2.5rem 4rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    padding: 0.4rem 1rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .hero-badge:hover { background: #e8d2c8; }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-role {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    color: var(--ink-mid);
+    letter-spacing: -0.01em;
+    margin-bottom: 2rem;
+  }
+
+  .hero-contact {
+    display: flex;
+    gap: 1.75rem;
+    flex-wrap: wrap;
+    font-size: 0.92rem;
+  }
+
+  .hero-contact a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(14,14,14,0.25);
+    padding-bottom: 1px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .hero-contact a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── SECTION SHARED ── */
+  section {
+    padding: 4.5rem 2.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+
+  .section-text {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    max-width: 700px;
+    margin-bottom: 2.5rem;
+    line-height: 1.75;
+  }
+
+  .section-text + .section-text { margin-top: -1.5rem; }
+
+  .section-text strong { font-weight: 400; color: var(--ink); }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid rgba(14,14,14,0.1);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* ── VIDEO EMBED ── */
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    background: var(--ink);
+    margin-bottom: 2.5rem;
+  }
+
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  /* ── WORKBOOK CARDS ── */
+  .subsection-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 1rem;
+  }
+
+  .workbook-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.85rem;
+  }
+
+  .workbook-card {
+    background: var(--white);
+    border: 1px solid rgba(14,14,14,0.12);
+    padding: 1.1rem 1rem;
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .workbook-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .workbook-tag {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .workbook-title {
+    font-size: 0.85rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .workbook-open {
+    font-size: 0.75rem;
+    color: var(--ink-muted);
+    margin-top: auto;
+    padding-top: 0.3rem;
+  }
+
+  /* ── F5 LINK CARDS ── */
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .link-card {
+    background: var(--white);
+    border: 1px solid rgba(14,14,14,0.12);
+    padding: 1.5rem 1.25rem;
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.2s, transform 0.15s;
+  }
+
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .link-card-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  .link-card-desc {
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    font-weight: 300;
+    line-height: 1.55;
+  }
+
+  .link-card-arrow {
+    display: inline-block;
+    margin-top: 0.85rem;
+    font-size: 0.78rem;
+    color: var(--accent);
+  }
+
+  /* ── PDF EMBED ── */
+  .pdf-block {
+    margin-bottom: 1.75rem;
+  }
+
+  .pdf-block:last-child { margin-bottom: 0; }
+
+  .pdf-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    color: var(--ink);
+  }
+
+  .pdf-frame-wrap {
+    border: 1px solid rgba(14,14,14,0.12);
+    background: var(--white);
+  }
+
+  .pdf-frame-wrap iframe {
+    width: 100%;
+    height: 650px;
+    border: none;
+    display: block;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 3rem 2.5rem 4rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+
+  footer p {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    font-weight: 300;
+  }
+
+  footer a { color: var(--ink-mid); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 760px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { gap: 1rem; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .hero, section, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .link-grid { grid-template-columns: 1fr; }
+    .workbook-grid { grid-template-columns: repeat(2, 1fr); }
+    .pdf-frame-wrap iframe { height: 480px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-name">Aaron Johnson</a>
+  <div class="nav-links">
+    <a href="#eca">Engaging Courses</a>
+    <a href="#f5">F5</a>
+    <a href="#nordstrom">Nordstrom</a>
+    <a href="mailto:maruapo@hotmail.com" class="nav-cta">Contact</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div class="hero">
+  <a href="https://inkmotion.art" class="hero-badge">Currently building InkMotion — an AI video startup ↗</a>
+  <h1>Aaron Johnson</h1>
+  <p class="hero-role">Instructional Design · AI Video Production · Agile Training Content</p>
+  <div class="hero-contact">
+    <a href="mailto:maruapo@hotmail.com">maruapo@hotmail.com</a>
+    <a href="tel:9159965045">915-996-5045</a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ENGAGING COURSES ACADEMY -->
+<section id="eca">
+  <p class="section-eyebrow">Engaging Courses Academy</p>
+  <h2>Instructional design training, built and taught solo</h2>
+  <p class="section-text">This online company teaches instructional design skills to allow the creation of more engaging online content. The embedded playlist below displays the 30 primary videos in the course. Below the videos are a few selected training workbooks that accompany the videos.</p>
+
+  <div class="video-wrapper">
+    <iframe src="https://www.youtube.com/embed/videoseries?list=PLPwCKY8yByQSi0c8Pv369x6ntpaC148xI" allowfullscreen></iframe>
+  </div>
+
+  <p class="subsection-label">Selected training workbooks</p>
+  <div class="workbook-grid">
+    <a href="documents/M2L1_Activity-2_demo_.pdf" target="_blank" class="workbook-card">
+      <span class="workbook-tag">M2 · L1</span>
+      <span class="workbook-title">Embrace Word Salad — planning &amp; organizing content</span>
+      <span class="workbook-open">Open PDF ↗</span>
+    </a>
+    <a href="documents/M2L3_Checklist.pdf" target="_blank" class="workbook-card">
+      <span class="workbook-tag">M2 · L3</span>
+      <span class="workbook-title">3CPO Checklist — engaging layouts</span>
+      <span class="workbook-open">Open PDF ↗</span>
+    </a>
+    <a href="documents/M2L3_Activities.pdf" target="_blank" class="workbook-card">
+      <span class="workbook-tag">M2 · L3</span>
+      <span class="workbook-title">Engaging Layouts — activities</span>
+      <span class="workbook-open">Open PDF ↗</span>
+    </a>
+    <a href="documents/M3L1_Activity-2_demo_.pdf" target="_blank" class="workbook-card">
+      <span class="workbook-tag">M3 · L1</span>
+      <span class="workbook-title">Show Don't Tell — story replacement</span>
+      <span class="workbook-open">Open PDF ↗</span>
+    </a>
+    <a href="documents/M7L1_Activity-1_demo_.pdf" target="_blank" class="workbook-card">
+      <span class="workbook-tag">M7 · L1</span>
+      <span class="workbook-title">Real-World Application — replace hypotheticals</span>
+      <span class="workbook-open">Open PDF ↗</span>
+    </a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- F5 -->
+<section id="f5">
+  <p class="section-eyebrow">F5 — Instructor-Led Training</p>
+  <h2>A 3-day SaaS training course, built to stay current</h2>
+  <p class="section-text">Material created for the 3-day training course for SaaS product "F5 Distributed Cloud Services" was designed and created by me in an authoring tool called Xyleme (aka "Madcap Xyleme"). The course is designed to be taught by an instructor via Zoom or in-person, and contains reference material and labs. Due to the ever-changing nature of the product itself, the material is designed to be constantly live and constantly updated, so students always have the most-recent version on-hand.</p>
+  <p class="section-text">Each link below is a separate web page for three different purposes: the <strong>Instructor Guide</strong> shows everything the instructor needs to know to run the class, including secret tips and tricks for using SaaS tools and AWS provisioning. The <strong>Presentation</strong> displays in Xyleme's version of PowerPoint, and is meant to be presented to the class during training. The <strong>Student Guide</strong> is nearly identical to the Instructor Guide except for excised sensitive content (e.g. AWS access keys).</p>
+
+  <div class="link-grid">
+    <a href="https://dazmuth.github.io/ig/" target="_blank" class="link-card">
+      <p class="link-card-title">Instructor Guide</p>
+      <p class="link-card-desc">Everything the instructor needs to run the class, including tips and AWS provisioning notes.</p>
+      <span class="link-card-arrow">View page ↗</span>
+    </a>
+    <a href="https://dazmuth.github.io/presentation/" target="_blank" class="link-card">
+      <p class="link-card-title">Presentation</p>
+      <p class="link-card-desc">The in-class presentation, built and displayed in Xyleme's PowerPoint equivalent.</p>
+      <span class="link-card-arrow">View page ↗</span>
+    </a>
+    <a href="https://dazmuth.github.io/studentguide/" target="_blank" class="link-card">
+      <p class="link-card-title">Student Guide</p>
+      <p class="link-card-desc">Same as the Instructor Guide, with sensitive content excised for students.</p>
+      <span class="link-card-arrow">View page ↗</span>
+    </a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- NORDSTROM -->
+<section id="nordstrom">
+  <p class="section-eyebrow">Nordstrom — Agile / Jira Training Program</p>
+  <h2>Pre-production process, built for Agile teams</h2>
+  <p class="section-text">These examples show how I approach the pre-production process. These documents were developed while I managed a team of Instructional Designers at Nordstrom, and show how to leverage Agile and Jira to complete work tasks. These documents have served me well for years, repeatedly modified for use across other projects and companies; these documents show the original approach specific to the Agile methodology.</p>
+
+  <div class="pdf-block">
+    <p class="pdf-title">ID Storyboard</p>
+    <div class="pdf-frame-wrap">
+      <iframe src="documents/ID_Storyboard.pdf"></iframe>
+    </div>
+  </div>
+
+  <div class="pdf-block">
+    <p class="pdf-title">Needs Analysis</p>
+    <div class="pdf-frame-wrap">
+      <iframe src="documents/Needs_Analysis.pdf"></iframe>
+    </div>
+  </div>
+
+  <div class="pdf-block">
+    <p class="pdf-title">Outline</p>
+    <div class="pdf-frame-wrap">
+      <iframe src="documents/Outline.pdf"></iframe>
+    </div>
+  </div>
+
+  <div class="pdf-block">
+    <p class="pdf-title">Stabilization</p>
+    <div class="pdf-frame-wrap">
+      <iframe src="documents/Stabilization.pdf"></iframe>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">Aaron Johnson</span>
+  <p><a href="mailto:maruapo@hotmail.com">maruapo@hotmail.com</a> · 915-996-5045</p>
+</footer>
+
+</body>
+</html>
