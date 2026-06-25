@@ -208,6 +208,24 @@
 
   .section-list strong { font-weight: 400; color: var(--ink); }
 
+  .video-quad {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .video-quad-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 600px) {
+    .video-quad { grid-template-columns: 1fr; }
+  }
+
   .section-note {
     font-size: 0.88rem;
     font-weight: 300;
@@ -499,6 +517,37 @@
       <span class="link-card-arrow">View page ↗</span>
     </a>
   </div>
+
+  <div class="xyleme-videos">
+    <p class="subsection-label" style="margin-top:2.5rem;">Xyleme Project Files</p>
+    <div class="video-quad">
+      <div class="video-quad-item">
+        <div class="video-wrapper" style="margin-bottom:0.6rem;">
+          <iframe src="https://www.youtube.com/embed/3H0n7aVY5k8" allowfullscreen></iframe>
+        </div>
+        <p class="video-quad-title">Storyboard</p>
+      </div>
+      <div class="video-quad-item">
+        <div class="video-wrapper" style="margin-bottom:0.6rem;">
+          <iframe src="https://www.youtube.com/embed/bqc9ZAH6J-Q" allowfullscreen></iframe>
+        </div>
+        <p class="video-quad-title">Outline / Scope</p>
+      </div>
+      <div class="video-quad-item">
+        <div class="video-wrapper" style="margin-bottom:0.6rem;">
+          <iframe src="https://www.youtube.com/embed/p0TBVJdTLgY" allowfullscreen></iframe>
+        </div>
+        <p class="video-quad-title">Execution</p>
+      </div>
+      <div class="video-quad-item">
+        <div class="video-wrapper" style="margin-bottom:0.6rem;">
+          <iframe src="https://www.youtube.com/embed/gspktp0532A" allowfullscreen></iframe>
+        </div>
+        <p class="video-quad-title">Design</p>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <hr class="divider">
