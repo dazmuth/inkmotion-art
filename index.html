@@ -722,12 +722,6 @@
     const data = new FormData(form);
     const action = form.getAttribute('action');
 
-    if (action === 'YOUR_FORMSPREE_ENDPOINT') {
-      successMsg.style.display = 'block';
-      form.style.display = 'none';
-      return;
-    }
-
     try {
       const res = await fetch(action, {
         method: 'POST',
@@ -737,8 +731,11 @@
       if (res.ok) {
         form.style.display = 'none';
         successMsg.style.display = 'block';
+      } else {
+        alert('Something went wrong. Please try again or email us directly.');
       }
     } catch(err) {
+      alert('Something went wrong. Please try again or email us directly.');
       console.error(err);
     }
   });
