@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0e0e;
+    --paper: #f5f2ee;
+    --font-display: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 2.5rem 1rem 4rem;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: -0.03em;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  /* Image scales down on small screens, never up past its native width */
+  .display {
+    display: block;
+    width: 100%;
+    max-width: 1034px;
+    height: auto;
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<h1>Image 1</h1>
+
+<!--
+  TO SWAP THE IMAGE: in GitHub, upload a new file named image.png
+  into this folder (it replaces the old one). Keep the same filename.
+  If your new file is a JPG or WebP, name it image.jpg or image.webp
+  and the page will find it automatically.
+-->
+<img id="display" class="display" src="image.png" alt="Image 1">
+
+<script>
+  // If image.png isn't found, try other common formats automatically.
+  (function () {
+    var img = document.getElementById('display');
+    var fallbacks = ['image.jpg', 'image.jpeg', 'image.webp'];
+    img.addEventListener('error', function () {
+      if (fallbacks.length) {
+        img.src = fallbacks.shift();
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
