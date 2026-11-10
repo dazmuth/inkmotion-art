@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inkmotion.art</title>
+<title>Inkmotion.Art</title>
 <meta name="description" content="The premier home of innovative methods for 21st century storytellers">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,14 +41,21 @@
     width: 100%;
     max-width: 56rem;
     padding: 3rem 1.5rem;
+    container-type: inline-size; /* lets the headline size itself to the space it has */
   }
 
+  /* The headline is sized so the whole word always fits its box, on any screen.
+     --fit is the measured width of "Inkmotion.Art" in em (with the tight letter spacing).
+     If you change the text, the font, or the letter spacing, re-measure and update it. */
   h1 {
+    --fit: 10.4;
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(2.8rem, 11.5vw, 7.5rem);
+    font-size: clamp(1.6rem, 9vw, 6.5rem);              /* fallback for very old browsers */
+    font-size: min(7.5rem, calc(100cqw / var(--fit)));  /* the real rule */
     line-height: 0.95;
     letter-spacing: -0.04em;
+    white-space: nowrap;
   }
 
   h1 .art { color: var(--accent); }
@@ -167,7 +174,7 @@
 
 <main>
   <div class="mark">
-    <h1>Inkmotion<span class="art">.art</span></h1>
+    <h1>Inkmotion<span class="art">.Art</span></h1>
     <svg class="stroke" viewBox="0 0 600 24" aria-hidden="true">
       <path pathLength="1" d="M4 14 C 80 4, 140 22, 220 12 S 380 6, 460 14 S 560 18, 596 8" />
     </svg>
