@@ -96,12 +96,12 @@ azmuth-site/ (separate repo, author-page.inkmotion.art)
 ├── avatar-blackbar-square.png    ← same photo, 3 MB, fallback only
 ├── README.md
 └── books/
-    ├── hole-attic-chapter-1.pdf   ← public preview
-    └── hole-attic.enc             ← full novel, encrypted
+    ├── chapter-1.html             ← free preview, shown directly on the page
+    └── hole-attic.enc             ← full novel (epub), encrypted
 
 Kept on AJ's computer, NOT in any repo:
-├── encrypt-book.html       ← local tool that locks a PDF
-└── original full novel PDF
+├── encrypt-book.html       ← local tool that locks the epub
+└── Hole-Attic-John-Azmuth.epub   ← unlocked original
 ```
 
 ---
@@ -141,13 +141,13 @@ On success the form is replaced by "Thanks. You're on the list."
 ## author-page.inkmotion.art
 
 ### Purpose
-John Azmuth's writing page: a short bio, then a scrolling PDF reader. Visitors read Chapter 1 of the novel *Hole Attic* for free. They can request a code that unlocks the whole story in the reader and enables PDF download.
+John Azmuth's writing page: a short bio, then a text reader. Visitors read Chapter 1 of the novel *Hole Attic* for free, as normal text on the page (no download). They can request a code that unlocks all 33 chapters in the reader and enables an e-book (epub) download.
 
 ### Page flow
 1. **Bio and photo:** bio text on the left, photo on the right at the same height under the "John Azmuth" heading (photo moves above the text on phones and small tablets)
-2. **Reader:** shows Chapter 1 by default
+2. **Reader:** reflowing text, shows Chapter 1 by default; readers can change text size and switch Dark/Light. Screenplay passages (chapters 18, 21, 33) are set in Courier on a tinted panel.
 3. **Request a code:** email form (Formspree, `source=azmuth-code-request`)
-4. **Unlock:** reader opens the full novel, and a download link appears (file name `Hole-Attic-John-Azmuth.pdf`)
+4. **Unlock:** reader opens the full novel with a chapter menu and Previous/Next, and a download link appears (file name `Hole-Attic-John-Azmuth.epub`)
 
 **Magic link:** `https://author-page.inkmotion.art/?code=XXXX-XXXX-XXXX-XXXX` unlocks with one click. The code is then removed from the address bar and remembered in the reader's browser.
 
@@ -155,7 +155,7 @@ John Azmuth's writing page: a short bio, then a scrolling PDF reader. Visitors r
 A static site can't truly hide files, and the repo is public. So the full novel is **encrypted before upload**: AES-256-GCM, key derived from the code with PBKDF2-SHA256 (600,000 iterations). Anyone can download `hole-attic.enc`, but it is unreadable without the code. The reader's browser decrypts it locally. Nothing is sent to a server.
 
 - Codes are 16 characters shown as `XXXX-XXXX-XXXX-XXXX` (about 79 bits). Capitals and dashes don't matter when typing.
-- **Never** upload the original PDF to the repo. GitHub keeps deleted files in history.
+- **Never** upload the unlocked epub to the repo. GitHub keeps deleted files in history.
 - Save each code in a password manager. It can't be recovered.
 
 ### Sending a reader their code (manual)
@@ -164,8 +164,9 @@ A static site can't truly hide files, and the repo is public. So the full novel 
 
 ### Known limits
 - One code works for everyone. If it leaks, lock the book again with a new code and upload the new `.enc`; the old code stops working and readers with it saved are asked for the new one.
-- Pages are drawn as images, so readers can't select or copy text. Chapter 1 is public by design.
-- The reader loads pdf.js 3.11.174 from the jsDelivr CDN. If that fails, the page falls back to a link to Chapter 1.
+- Chapter 1 is public by design. Once unlocked, text can be copied and the epub can be shared.
+- Why epub: the PDF forced phone readers to zoom and scroll sideways. The epub reflows to any screen (validated with epubcheck, 0 errors; cover carries the copyright line).
+- The reader loads JSZip 3.10.1 from the jsDelivr CDN (integrity-pinned). If that fails, the reader says so; the preview still works.
 - Formspree free plan: 50 submissions/month total.
 
 ---
@@ -177,8 +178,8 @@ AJ left these as placeholders on purpose to review the layout first.
 | Item | Where | Status |
 |------|-------|--------|
 | Real bio | `azmuth-site/index.html`, `<p class="bio">` | Done (Nov 10) |
-| Real Chapter 1 PDF | `azmuth-site/books/hole-attic-chapter-1.pdf` (keep file name; set the PDF Title property first) | TBD, currently a 6-page placeholder |
-| Real full novel, locked | `azmuth-site/books/hole-attic.enc` | TBD, currently an encrypted 30-page placeholder with a demo code (see the azmuth-site README) |
+| Chapter 1 preview | `azmuth-site/books/chapter-1.html` | Done (built from the Google Doc, about 1,039 words) |
+| Real full novel, locked | `azmuth-site/books/hole-attic.enc` | TBD: lock `Hole-Attic-John-Azmuth.epub` with encrypt-book.html and upload (the repo's current `.enc` is the old PDF version) |
 | Capitalization | homepage | Done: "Inkmotion.Art" |
 | Second Formspree notification email | Formspree settings | Optional |
 | Update this repo's `README.md` | repo root | TBD |
@@ -196,7 +197,7 @@ AJ left these as placeholders on purpose to review the layout first.
 - [x] GoDaddy DNS: add CNAME `author-page` → `dazmuth.github.io`
 - [ ] Repo Settings → Pages: deploy from `main` / root; custom domain `author-page.inkmotion.art`
 - [ ] Wait for the DNS check (up to an hour), then tick **Enforce HTTPS**
-- [ ] Test the placeholder code, then swap in the real files (see "Put in the real book" in the azmuth-site README)
+- [ ] Lock the epub, upload `books/hole-attic.enc` and `books/chapter-1.html`, delete old PDFs (see the azmuth-site README)
 - [ ] Submit both forms once and confirm they reach the Formspree dashboard
 
 ---
@@ -211,6 +212,7 @@ Separate page for job applications. Not linked from the main site. See `founder/
 
 - **Aug 2026:** Original investor/engineer landing page, /founder portfolio, /image1 and /image2, Formspree wiring. Built in the "AI Businesses" project, chat "inkmotion.art website".
 - **Nov 2026:** Pivot to authorship. Homepage rebuilt as a minimal landing page. author-page.inkmotion.art and the encrypted reader created, with a local lock tool. Site went live Nov 10 after HTTPS was enabled (the unlock needs HTTPS).
+- **Nov 12, 2026:** PDF reader replaced by an epub-based text reader (phones were unusable with the PDF). Chapter 1 embedded as text; full book still gated by emailed code; epub download added; lock tool now accepts epub only.
 - **Nov 10, 2026:** Real bio and photo added; "Get a code" button fixed; homepage headline fitted to all screen widths and changed to "Inkmotion.Art".
 
 To restore context, paste this document plus `azmuth-site/README.md` and `FOUNDER_README.md` into a new Claude session.
