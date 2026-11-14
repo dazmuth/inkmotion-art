@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMP Practice Quiz 4 Attempt 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0e0e;
+    --paper: #f5f2ee;
+    --font-display: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 2.5rem 1rem 4rem;
+  }
+
+  h1 {
+    max-width: 1014px;
+    margin: 0 auto 2rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    letter-spacing: -0.03em;
+    text-align: center;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  /* The quiz is a stack of images with no gap, so it scrolls like one long image.
+     Each is shown at its native width (1014px) and scales down on small screens, never up. */
+  .quiz {
+    max-width: 1014px;
+    margin: 0 auto;
+    font-size: 0;
+    line-height: 0;
+  }
+
+  .quiz img { display: block; width: 100%; height: auto; margin: 0; }
+
+  .quiz .missing {
+    font: 1rem/1.5 system-ui, sans-serif;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    background: #fff;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body>
+
+<h1 id="heading">PMP Practice Quiz 4 Attempt 2</h1>
+<main class="quiz" id="quiz"></main>
+<noscript><p style="text-align:center">Please turn on JavaScript to see the quiz images.</p></noscript>
+
+<script>
+  /* ============ THE ONLY PART YOU EDIT ============
+     TITLE  the heading and browser-tab name
+     PREFIX the image file name before the number (quiz3-1.webp, quiz3-2.webp ...)
+     PARTS  how many image pieces there are
+     Upload the pieces into this same folder. They show top to bottom in number order.
+     Keep them all the same width. WebP images can be at most 16,383 pixels tall. */
+  var TITLE  = 'PMP Practice Quiz 4 Attempt 2';
+  var PREFIX = 'quiz4-';
+  var PARTS  = 8;
+  /* ================================================= */
+
+  (function () {
+    document.title = TITLE;
+    document.getElementById('heading').textContent = TITLE;
+    var box = document.getElementById('quiz');
+    for (var n = 1; n <= PARTS; n++) {
+      var img = new Image();
+      img.alt = TITLE + ', part ' + n + ' of ' + PARTS;
+      img.decoding = 'async';
+      img.dataset.part = n;
+      img.addEventListener('error', function () {
+        var note = document.createElement('p');
+        note.className = 'missing';
+        note.textContent = 'Part ' + this.dataset.part + ' didn’t load. Try refreshing the page.';
+        this.replaceWith(note);
+      });
+      img.src = PREFIX + n + '.webp';
+      box.appendChild(img);
+    }
+  })();
+</script>
+
+</body>
+</html>
